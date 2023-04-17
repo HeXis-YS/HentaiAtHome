@@ -56,7 +56,7 @@ public class Settings {
 	private static String rpcServerCurrent = null, rpcServerLastFailed = null;
 	private static Hashtable<String, Integer> staticRanges = null;
 	private static File datadir = null, logdir = null, cachedir = null, tempdir = null, downloaddir = null;
-	private static String clientKey = "", clientHost = "", dataDirPath = "data", logDirPath = "log", cacheDirPath = "cache", tempDirPath = "tmp", downloadDirPath = "download", fileRedirectHeader = null, fileRedirectPath = null;
+	private static String clientKey = "", clientHost = "", dataDirPath = "data", logDirPath = "log", cacheDirPath = "cache", tempDirPath = "tmp", downloadDirPath = "download", fileRedirectHeader = null, fileRedirectPath = null, unixPath = null;
 
 	private static int clientID = 0, clientPort = 0, throttle_bytes = 0, overrideConns = 0, serverTimeDelta = 0, maxAllowedFileSize = 104857600, currentStaticRangeCount = 0;
 	private static long disklimit_bytes = 0, diskremaining_bytes = 0, fileSystemBlocksize = 4096;
@@ -292,6 +292,9 @@ public class Settings {
 			else if(setting.equals("trigger_cert_syncfile")) {
 				triggerCertSyncfile = value.equals("true");
 			}
+			else if(setting.equals("unix")) {
+				unixPath = value;
+			}
 			else if(setting.equals("skip_free_space_check")) {
 				skipFreeSpaceCheck = value.equals("true");
 			}
@@ -425,6 +428,10 @@ public class Settings {
 
 	public static String getFileRedirectPath() {
 		return fileRedirectPath;
+	}
+
+	public static String getUnixPath() {
+		return unixPath;
 	}
 
 	public static int getServerTime() {

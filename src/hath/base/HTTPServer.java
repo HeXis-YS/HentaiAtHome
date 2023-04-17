@@ -41,6 +41,8 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
+import org.newsclub.net.unix.AFUNIXServerSocket;
+import org.newsclub.net.unix.AFUNIXSocketAddress;
 
 public class HTTPServer implements Runnable {
 	private HentaiAtHomeClient client;
@@ -72,6 +74,7 @@ public class HTTPServer implements Runnable {
 			final String certPass = Settings.getClientKey();
 			isDisableSSL = Settings.isDisableSSL();
 			boolean isTriggerCertSyncfile  = Settings.isTriggerCertSyncfile();
+			String unixPath = Settings.getUnixPath();
 
 			Out.info("Requesting certificate from server...");
 			File certFile = new File(Settings.getDataDir(), "hathcert.p12");
@@ -116,7 +119,12 @@ public class HTTPServer implements Runnable {
 
 			Out.info("Starting up the internal HTTP Server...");
 			if (isDisableSSL) {
-				listener = new ServerSocket(port);
+				if (unixPath != null) {
+					listener = AFUNIXServerSocket.newInstance();
+					listener.bind(AFUNIXSocketAddress.of(new File(unixPath)));
+				} else {
+					listener = new ServerSocket(port);
+				}
 			} else {
 				sslContext = SSLContext.getInstance("TLS");
 				sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
