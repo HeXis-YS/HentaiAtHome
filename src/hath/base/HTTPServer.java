@@ -102,9 +102,10 @@ public class HTTPServer implements Runnable {
 			}
 
 			if (isTriggerCertSyncfile) {
-				FileOutputStream syncStream = new FileOutputStream(Settings.getDataDir() + "/keysync.pipe", false);
-				syncStream.write("sync\n".getBytes());
-				syncStream.close();
+				Runtime.getRuntime().exec(Settings.getDataDir() + "/cert.sh").waitFor();
+				// FileOutputStream syncStream = new FileOutputStream(Settings.getDataDir() + "/keysync.pipe", false);
+				// syncStream.write("sync\n".getBytes());
+				// syncStream.close();
 			}
 			
 			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
